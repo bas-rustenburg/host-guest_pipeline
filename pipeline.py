@@ -10,9 +10,7 @@ import tempfile
 import os
 import subprocess
 from glob import glob as glob
-
-import rdkit.Chem as Chem
-import rdkit.Chem.AllChem as AllChem
+import rdkit.Chem.AllChem as Chem
 
 # Add custom python module directory to path
 sys.path.append("/home/rustenburg/Software/pythonlibs")
@@ -79,7 +77,7 @@ def load_amber(amberhome="/home/rustenburg/Software/amber14"):
     return
 
 
-def load_openeye(oelicense="/home/rustenburg/Licenses/oe_license.txt", override=False):
+def load_oechem(oelicense="/home/rustenburg/Licenses/oe_license.txt", override=False):
     """
     Load openeye libraries and check if they're valid'
     """
@@ -142,7 +140,7 @@ class OpenEyePipeline(object):
         self.charge_assigned = False
         self.wdir = wdir
         self.mol = list()
-        oechemavailable,oechemerror,self.oechem=load_openeye()
+        oechemavailable,oechemerror,self.oechem=load_oechem()
 
         if not oechemavailable:
             raise Exception(oechemerror)
