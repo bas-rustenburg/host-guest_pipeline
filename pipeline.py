@@ -10,9 +10,7 @@ import tempfile
 import os
 import subprocess
 from glob import glob as glob
-
-import rdkit.Chem as Chem
-import rdkit.Chem.AllChem as AllChem
+import rdkit.Chem.AllChem as Chem
 
 # Add custom python module directory to path
 sys.path.append("/home/rustenburg/Software/pythonlibs")
@@ -79,7 +77,7 @@ def load_amber(amberhome="/home/rustenburg/Software/amber14"):
     return
 
 
-def load_openeye(oelicense="/home/rustenburg/Licenses/oe_license.txt", override=False):
+def load_oechem(oelicense="/home/rustenburg/Licenses/oe_license.txt", override=False):
     """
     Load openeye libraries and check if they're valid'
     """
@@ -142,7 +140,7 @@ class OpenEyePipeline(object):
         self.charge_assigned = False
         self.wdir = wdir
         self.mol = list()
-        oechemavailable,oechemerror,self.oechem=load_openeye()
+        oechemavailable,oechemerror,self.oechem=load_oechem()
 
         if not oechemavailable:
             raise Exception(oechemerror)
@@ -551,9 +549,9 @@ class MoleculePipeline(object):
 
 parser = argparse.ArgumentParser(
     description="Transform IUPAC names into molecules with predicated protonation and tautomeric states and get topologies for use with YANK")
-inputf = parser.add_mutually_exclusive_group(required=True)
+input_file_parser = parser.add_mutually_exclusive_group(required=True)
 
-inputf.add_argument(
+input_file_parser.add_argument(
     "-i",
     dest="file",
     help="Tab separated file with name, iupac name and formal charges of molecules, one molecule per line.",
@@ -561,13 +559,13 @@ inputf.add_argument(
     type=lambda i: try_opening(
         parser,
          i))
-inputf.add_argument(
+input_file_parser.add_argument(
     "-r",
     dest="filename",
     help="Any molecular input file supported by OEchem.",
     type=str,
     metavar="FILENAME")
-inputf.add_argument(
+input_file_parser.add_argument(
     "-g",
     dest="glob",
     help="Pattern for molecular input file(s) supported by OEchem.",
