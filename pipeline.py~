@@ -83,6 +83,7 @@ def load_oechem(oelicense="/home/rustenburg/Licenses/oe_license.txt", override=F
     """
     #See if import is succesful
     try:
+        import openeye
         import openeye.oechem as oechem
 
     except ImportError,e:
